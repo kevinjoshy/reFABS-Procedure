@@ -20,23 +20,23 @@ conregr = function(p,power=10,de=1,kmin=NULL,k = seq(0.01,1,0.01), ymad_pi0 = NU
   return(list(kmin=kmin, p_input = p, p_adj = miny$p_adj,pi0=ymedian_pi0))
 }
 
-peaks<!function(series,span=3)
+peaks = function(series,span=3)
 {
-  z <! embed(series, span)
-  s <! span%/%2
-  #v<! max.col(z) == 1 + s #From Ripley
+  z = embed(series, span)
+  s = span%/%2
+  #v= max.col(z) == 1 + s #From Ripley
   
   #v=1 for simple transition and v=2 for real peaks i.e. transitions on both sides: This is by RK
   Murthy
-  vF<! max.col(z,ties.method="first") == 1 + s ; vL<! max.col(z,ties.method="last") == 1 + s ;v =
+  vF = max.col(z,ties.method="first") == 1 + s ; vL = max.col(z,ties.method="last") == 1 + s ;v =
     vL+vF
   
-  result <- c(rep(0,s),v) #FALSE was replaced by 0 by RK Murthy
-  result <- result[1:(length(result)-s)]
+  result = c(rep(0,s),v) #FALSE was replaced by 0 by RK Murthy
+  result = result[1:(length(result)-s)]
   result
 }
 ##############################################################################
-Find_Mink<!function(k,median_pi,mad_pi,cutoff=0.01,mad_cutoff=0.05)
+Find_Mink = function(k,median_pi,mad_pi,cutoff=0.01,mad_cutoff=0.05)
 {
   yyii=NULL
   for(i in 1:length(k))
@@ -118,10 +118,10 @@ quadprog_reg = function(p1,k,power,m=1,flag=NULL,c=0.0001)
   A = matrix(cA,nrow = 2*n, ncol = m*power+1, byrow = F)
   pwr = matrix(cpwr,nrow = n, ncol = m*power, byrow = F)
   Y = matrix(c(p),nrow = floor(n*k), ncol = 1, byrow = F)
-  D <! crossprod(X)
+  D = crossprod(X)
   for(i in 1:(m*power+1)){ D[i,i] =D[i,i]+c}
-  d <! crossprod(X, Y)
-  b <! rep(0,2*n)
+  d = crossprod(X, Y)
+  b = rep(0,2*n)
   de = eigen(D,only.values=F)$values
   if(length(de[de<(2e-17)])>0) return(list(optk = 2, optpi = 2,pi0_new=2))
   obj = solve.QP(D, d, t(A), bvec=b)
